@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--badges);
+  padding: 24px 120px;
+  height: 68px;
+  background: var(--badges);
+}
+
+.header ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+/* .header li {} */
+
+.header a {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--main);
+}
+
+.header a:hover {
+  color: var(--button-hover);
+}
