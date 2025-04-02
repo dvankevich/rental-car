@@ -1,2 +1,1 @@
-# rental-car
-Rental Car test task
+# Rental Car web app
