@@ -11,20 +11,6 @@ const HomePage = () => {
       >
         View Catalog
       </Button>
-      <Button
-        size="small"
-        color="blue"
-        onClick={() => console.log('small Blue Button Clicked')}
-      >
-        Search
-      </Button>
-      <Button
-        size="small"
-        color="transparent"
-        onClick={() => console.log('small Transparent Button Clicked')}
-      >
-        Load more
-      </Button>
     </>
   );
 };
