@@ -7,24 +7,26 @@
   background: var(--badges);
 }
 
-.header ul {
-  margin: 0;
-  padding: 0;
+.navigation {
   display: flex;
   flex-direction: row;
   gap: 32px;
 }
 
-/* .header li {} */
-
-.header a {
+.navLink {
   font-weight: 500;
   font-size: 16px;
   line-height: 1.25;
   text-align: center;
   color: var(--main);
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
-.header a:hover {
+.navLink:hover {
+  color: var(--button-hover);
+}
+
+.active {
   color: var(--button-hover);
 }
