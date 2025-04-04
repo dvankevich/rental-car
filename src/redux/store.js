@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-const rootReducer = (state, action) => {
-  return state;
-};
+import carReducer from './carsSlice.js';
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    car: carReducer,
+  },
 });
