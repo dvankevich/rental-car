@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import carReducer from './carSlice';
+
+// Поки що використовуємо редюсер який
+// тільки повертає отриманий стан Redux
+const rootReducer = (state, action) => {
+  return state;
+};
 
 export const store = configureStore({
-  reducer: {
-    cars: carReducer,
-  },
+  reducer: rootReducer,
 });
