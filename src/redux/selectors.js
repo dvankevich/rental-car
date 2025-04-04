@@ -1,3 +1,6 @@
-export const getCars = state => state.cars.cars;
-export const getCarsLoading = state => state.cars.loading;
-export const getCarsError = state => state.cars.error;
+// redux/selectors.js
+export const selectCars = state => state.cars.cars;
+export const selectTotalCars = state => state.cars.totalCars;
+export const selectCarsLoading = state => state.cars.loading;
+export const selectCarsError = state => state.cars.error;
+export const selectBrands = state => state.cars.brands;
