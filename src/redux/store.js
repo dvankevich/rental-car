@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-// Поки що використовуємо редюсер який
-// тільки повертає отриманий стан Redux
-const rootReducer = (state, action) => {
-  return state;
-};
+import carReducer from './carSlice';
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    cars: carReducer,
+    // ... інші ред'юсери
+  },
 });
