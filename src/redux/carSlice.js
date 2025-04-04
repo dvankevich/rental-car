@@ -7,6 +7,7 @@ const initialState = {
   totalCars: 0,
   loading: false,
   error: null,
+  currentPage: 1,
 };
 
 const carSlice = createSlice({
@@ -18,6 +19,10 @@ const carSlice = createSlice({
       state.totalCars = 0;
       state.loading = false;
       state.error = null;
+      state.currentPage = 1;
+    },
+    incrementPage: state => {
+      state.currentPage += 1;
     },
   },
   extraReducers: builder => {
@@ -29,7 +34,11 @@ const carSlice = createSlice({
       })
       .addCase(fetchCars.fulfilled, (state, action) => {
         state.loading = false;
-        state.cars = action.payload.cars;
+        // При завантаженні наступної сторінки додаємо нові автомобілі до існуючого списку
+        state.cars =
+          state.currentPage === 1
+            ? action.payload.cars
+            : [...state.cars, ...action.payload.cars];
         state.totalCars = action.payload.totalCars;
       })
       .addCase(fetchCars.rejected, (state, action) => {
@@ -58,5 +67,5 @@ const carSlice = createSlice({
   },
 });
 
-export const { clearCars } = carSlice.actions;
+export const { clearCars, incrementPage } = carSlice.actions;
 export default carSlice.reducer;

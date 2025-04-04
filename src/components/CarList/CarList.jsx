@@ -6,30 +6,25 @@ import {
   selectTotalCars,
   selectCarsLoading,
   selectCarsError,
+  selectCurrentPage, // Імпортуємо селектор поточної сторінки
 } from '../../redux/selectors';
+import { incrementPage } from '../../redux/carSlice'; // Імпортуємо екшен для збільшення сторінки
+
 const CarList = () => {
   const dispatch = useDispatch();
   const cars = useSelector(selectCars);
   const totalCars = useSelector(selectTotalCars);
   const loading = useSelector(selectCarsLoading);
   const error = useSelector(selectCarsError);
-
-  // Отримуємо поточні фільтри зі стану Redux (якщо ви їх там зберігаєте)
-  // Якщо ні, вам потрібно буде передавати їх сюди з батьківського компонента
   const filters = useSelector(state => state.cars.filters); // Приклад, скоригуйте відповідно
-  const currentPage = useSelector(state => state.cars.currentPage) || 1; // Приклад, скоригуйте відповідно
+  const currentPage = useSelector(selectCurrentPage); // Отримуємо номер поточної сторінки зі стану
 
   useEffect(() => {
-    // Викликаємо fetchCars при першому завантаженні або при зміні фільтрів/сторінки
     dispatch(fetchCars({ ...filters, page: currentPage }));
   }, [dispatch, filters, currentPage]);
 
   const handleLoadMore = () => {
-    // Збільшуємо номер поточної сторінки в Redux стані (якщо ви його там зберігаєте)
-    // Або передайте колбек батьківському компоненту для оновлення сторінки
-    // Приклад:
-    // dispatch({ type: 'cars/incrementPage' });
-    console.log('Load More clicked'); // Замініть на вашу логіку оновлення сторінки
+    dispatch(incrementPage()); // Відправляємо екшен для збільшення сторінки
   };
 
   if (loading) {
