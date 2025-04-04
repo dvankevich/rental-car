@@ -1,73 +1,71 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react'; // Додали useRef
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBrands, fetchCars } from '../../redux/operations';
-import { setPage } from '../../redux/carsSlice';
+import { fetchCars, resetCars } from '../../redux/carSlice';
+import FilterForm from '../../components/FilterForm/FilterForm';
 
-const CatalogPage = () => {
+const CarList = () => {
   const dispatch = useDispatch();
+  const { cars, loading, error, page, totalPages } = useSelector(
+    state => state.cars
+  );
 
-  const brands = useSelector(state => state.car.brands);
-  const cars = useSelector(state => state.car.cars);
-  const loading = useSelector(state => state.car.loading);
-  const error = useSelector(state => state.car.error);
-  const currentPage = useSelector(state => state.car.currentPage);
-  const totalPages = useSelector(state => state.car.totalPages);
+  const [filters, setFilters] = useState({
+    brand: '',
+    rentalPrice: '',
+    minMileage: '',
+    maxMileage: '',
+  });
 
+  const initialFilters = useRef(filters); // Зберігаємо початкові фільтри
+
+  // Завантаження автомобілів при першому завантаженні компонента
   useEffect(() => {
-    dispatch(fetchBrands());
-    dispatch(fetchCars({ page: currentPage }));
-  }, [dispatch, currentPage]);
+    dispatch(fetchCars({ page: 1, ...filters, reset: true }));
+  }, [dispatch]);
 
-  const handleLoadMore = () => {
-    if (currentPage < totalPages) {
-      const nextPage = currentPage + 1;
-      dispatch(setPage(nextPage));
-      dispatch(fetchCars({ page: nextPage }));
+  // Виклик для завантаження автомобілів при змінах фільтрів (після початкових)
+  useEffect(() => {
+    // Порівнюємо поточні фільтри з початковими
+    if (JSON.stringify(filters) !== JSON.stringify(initialFilters.current)) {
+      //dispatch(resetCars());
+      dispatch(fetchCars({ page: 1, ...filters, reset: true }));
     }
+  }, [dispatch, filters]);
+
+  const loadMoreCars = () => {
+    dispatch(fetchCars({ page: page + 1 }));
+  };
+
+  const handleFilterChange = newFilters => {
+    setFilters(newFilters);
   };
 
   return (
     <div>
-      {/* <h1>Brands</h1>
+      <h1>Car Rentals</h1>
+      {/* <FilterForm
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onApplyFilters={() =>
+          dispatch(fetchCars({ page: 1, ...filters, reset: true }))
+        }
+      /> */}
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <ul>
-        {brands.map((brand, index) => (
-          <li key={index}>{brand}</li>
-        ))}
-      </ul> */}
-
-      <h1>Cars</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <div className="cars-list">
         {cars.map(car => (
-          <div key={car.id} className="car-card">
-            <img
-              src={car.img}
-              alt={car.model}
-              style={{ width: '200px', height: 'auto' }}
-            />
-            <h2>
-              {car.brand} {car.model}
-            </h2>
-            <p>Year: {car.year}</p>
-            <p>Type: {car.type}</p>
-            <p>Price: ${car.rentalPrice} per day</p>
-            <p>Address: {car.address}</p>
-            <p>Description: {car.description}</p>
-            <p>Mileage: {car.mileage} miles</p>
-          </div>
+          <li key={car.id}>
+            <h2>{`${car.brand} ${car.model}`}</h2>
+            <p>{car.description}</p>
+            <img src={car.img} alt={`${car.brand} ${car.model}`} />
+          </li>
         ))}
-      </div>
-
-      {currentPage < totalPages && (
-        <button onClick={handleLoadMore} disabled={loading}>
-          Load More
-        </button>
+      </ul>
+      {page < totalPages && !loading && (
+        <button onClick={loadMoreCars}>Load More</button>
       )}
     </div>
   );
 };
 
-export default CatalogPage;
+export default CarList;
