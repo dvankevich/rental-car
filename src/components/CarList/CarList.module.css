@@ -1,0 +1,23 @@
+/* src/components/CarList/CarList.module.css */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.cardTitle {
+  color: var(--main);
+  /* #101828 */
+}
+
+.type {
+  color: var(--gray);
+  /* #8d929a */
+}
+
+.price {
+  color: var(--button);
+  /* #3470ff */
+}
+
+/* ...решта стилів, як раніше, з var де потрібно */
