@@ -27,7 +27,7 @@ export const getCars = createAsyncThunk(
       minMileage = "",
       maxMileage = "",
       page = 1,
-      limit = 8,
+      limit = 12,
     } = {},
     { rejectWithValue }
   ) => {
