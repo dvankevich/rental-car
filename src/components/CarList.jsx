@@ -8,6 +8,7 @@ import {
 } from "../redux/cars/selectors";
 import { getCars } from "../redux/cars/operations";
 import CarCard from "./CarCard";
+import styles from "./CarList.module.css";
 
 const CarList = () => {
   const dispatch = useDispatch();
@@ -15,44 +16,31 @@ const CarList = () => {
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const filters = useSelector(selectFilters);
-  const isLoading = useSelector(selectLoading);
+  const loading = useSelector(selectLoading);
 
   const handleLoadMore = () => {
-    const nextPage = currentPage + 1;
-    // Передаємо поточні фільтри + нову сторінку
-    dispatch(getCars({ ...filters, page: nextPage }));
+    dispatch(getCars({ ...filters, page: currentPage + 1 }));
   };
 
-  if (cars.length === 0 && !isLoading) {
-    return <p>No cars found.</p>;
+  if (cars.length === 0 && !loading) {
+    return <p className={styles.empty}>No cars found.</p>;
   }
 
   return (
-    <div>
-      <h3>Cars List ({cars.length} loaded)</h3>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "15px",
-        }}
-      >
+    <div className={styles.list}>
+      <div className={styles.grid}>
         {cars.map((car) => (
           <CarCard key={car.id} car={car} />
         ))}
       </div>
-
       {currentPage < totalPages && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <button
-            onClick={handleLoadMore}
-            disabled={isLoading}
-            style={{ padding: "10px 20px", cursor: "pointer" }}
-          >
-            {isLoading ? "Loading..." : "Load More"}
-          </button>
-        </div>
+        <button
+          onClick={handleLoadMore}
+          disabled={loading}
+          className={styles.loadMore}
+        >
+          {loading ? "Loading..." : "Load more"}
+        </button>
       )}
     </div>
   );
