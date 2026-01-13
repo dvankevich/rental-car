@@ -1,0 +1,52 @@
+.hero {
+  height: 60vh;
+  background-image: url('');
+  /* Replace with actual image URL */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: var(--white);
+  padding: 2rem;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  /* Overlay for text readability */
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  z-index: 1;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  z-index: 1;
+}
+
+.button {
+  padding: 1rem 2rem;
+  background-color: var(--button);
+  color: var(--white);
+  border-radius: 2rem;
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.button:hover {
+  background-color: var(--button-hover);
+}
