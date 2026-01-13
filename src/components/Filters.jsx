@@ -1,116 +1,88 @@
-// src/components/Filters.jsx
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBrands } from "../redux/cars/selectors";
 import { setFilters } from "../redux/cars/slice";
 import { getCars } from "../redux/cars/operations";
+import styles from "./Filters.module.css";
+
+const PRICE_OPTIONS = [30, 40, 50, 60, 70, 80, 90, 100];
 
 const Filters = () => {
   const dispatch = useDispatch();
   const brands = useSelector(selectBrands);
 
-  // Локальний стейт полів
   const [brand, setBrand] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [minMileage, setMinMileage] = useState(""); // Додано
-  const [maxMileage, setMaxMileage] = useState(""); // Додано
+  const [minMileage, setMinMileage] = useState("");
+  const [maxMileage, setMaxMileage] = useState("");
 
   const handleSearch = () => {
-    const newFilters = {
+    const filters = {
       brand,
-      maxPrice,
-      minMileage: minMileage ? Number(minMileage) : null,
-      maxMileage: maxMileage ? Number(maxMileage) : null,
+      maxPrice: maxPrice ? Number(maxPrice) : "",
+      minMileage: minMileage ? Number(minMileage.replace(/,/g, "")) : "",
+      maxMileage: maxMileage ? Number(maxMileage.replace(/,/g, "")) : "",
     };
-
-    // 1. Зберігаємо фільтри в Redux
-    dispatch(setFilters(newFilters));
-
-    // 2. Робимо запит з новими фільтрами (скидаємо на 1 сторінку)
-    dispatch(getCars({ ...newFilters, page: 1 }));
+    dispatch(setFilters(filters));
+    dispatch(getCars({ ...filters, page: 1 }));
   };
 
-  // Стиль для інпутів, щоб не дублювати код
-  const inputStyle = {
-    padding: "8px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    width: "120px",
-  };
+  const formatMileage = (value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
-    <div
-      style={{
-        marginBottom: "20px",
-        padding: "15px",
-        background: "#f5f5f5",
-        borderRadius: "8px",
-      }}
-    >
-      <h3>Filters</h3>
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        {/* Вибір бренду */}
+    <div className={styles.filters}>
+      <div className={styles.field}>
+        <label>Car brand</label>
         <select
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
-          style={inputStyle}
+          className={styles.select}
         >
-          <option value="">All Brands</option>
-          {brands.map((b, idx) => (
-            <option key={idx} value={b}>
+          <option value="">Choose a brand</option>
+          {brands.map((b) => (
+            <option key={b} value={b}>
               {b}
             </option>
           ))}
         </select>
-
-        {/* Ціна */}
-        <input
-          type="number"
-          placeholder="Max Price ($)"
+      </div>
+      <div className={styles.field}>
+        <label>Price/ 1 hour</label>
+        <select
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          style={inputStyle}
-        />
-
-        {/* Пробіг ВІД */}
-        <input
-          type="number"
-          placeholder="Min Mileage"
-          value={minMileage}
-          onChange={(e) => setMinMileage(e.target.value)}
-          style={inputStyle}
-        />
-
-        {/* Пробіг ДО */}
-        <input
-          type="number"
-          placeholder="Max Mileage"
-          value={maxMileage}
-          onChange={(e) => setMaxMileage(e.target.value)}
-          style={inputStyle}
-        />
-
-        <button
-          onClick={handleSearch}
-          style={{
-            padding: "8px 16px",
-            background: "blue",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
+          className={styles.select}
         >
-          Search
-        </button>
+          <option value="">To $</option>
+          {PRICE_OPTIONS.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+        </select>
       </div>
+      <div className={styles.mileage}>
+        <label>Car mileage / km</label>
+        <div className={styles.mileageInputs}>
+          <input
+            type="text"
+            placeholder="From"
+            value={formatMileage(minMileage)}
+            onChange={(e) => setMinMileage(e.target.value)}
+            className={styles.input}
+          />
+          <input
+            type="text"
+            placeholder="To"
+            value={formatMileage(maxMileage)}
+            onChange={(e) => setMaxMileage(e.target.value)}
+            className={styles.input}
+          />
+        </div>
+      </div>
+      <button onClick={handleSearch} className={styles.button}>
+        Search
+      </button>
     </div>
   );
 };
