@@ -2,12 +2,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBrands, getCars, getCarById } from "./operations";
 
+const loadFavoritesFromLocalStorage = () => {
+  const savedFavorites = localStorage.getItem("favorites");
+  return savedFavorites ? JSON.parse(savedFavorites) : [];
+};
+
 const carsSlice = createSlice({
   name: "cars",
   initialState: {
     brands: [], // Список брендів з API
     cars: [], // Пагінований список (appended при load more)
-    favorites: [], // Улюблені (локально)
+    favorites: loadFavoritesFromLocalStorage(), // Улюблені (локально)
     selectedCar: null,
     filters: {
       // Поточні фільтри для повторного використання
@@ -32,10 +37,12 @@ const carsSlice = createSlice({
     addToFavorites: (state, action) => {
       if (!state.favorites.find((c) => c.id === action.payload.id)) {
         state.favorites.push(action.payload);
+        localStorage.setItem("favorites", JSON.stringify(state.favorites));
       }
     },
     removeFromFavorites: (state, action) => {
       state.favorites = state.favorites.filter((c) => c.id !== action.payload);
+      localStorage.setItem("favorites", JSON.stringify(state.favorites));
     },
   },
   extraReducers: (builder) => {
@@ -64,7 +71,7 @@ const carsSlice = createSlice({
         state.loading = false;
         const newCars = action.payload.cars.filter(
           (newCar) =>
-            !state.cars.some((existingCar) => existingCar.id === newCar.id)
+            !state.cars.some((existingCar) => existingCar.id === newCar.id),
         ); // Додаємо тільки унікальні
         state.cars = [...state.cars, ...newCars];
         state.totalPages = action.payload.totalPages;
