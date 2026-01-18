@@ -1,11 +1,20 @@
 // src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import { carsReducer } from "./cars/slice";
-import { persistStore, persistReducer } from "redux-persist";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-  key: "root",
+  key: "favoritesCar",
   storage,
   whitelist: ["favorites"],
 };
@@ -19,9 +28,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ігноруємо перевірку для redux-persist
-        ignoredActions: [persistStore.persistReducer],
-        ignoredPaths: ["persistedReducer"],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
 });
