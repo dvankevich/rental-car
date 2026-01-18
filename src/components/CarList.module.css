@@ -5,8 +5,41 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
+  /* 4 стовпці для великих екранів */
   gap: 3rem 2rem;
+}
+
+/* Мобільні пристрої */
+@media (max-width: 599px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+    /* 1 стовпець */
+  }
+}
+
+/* Портативні пристрої */
+@media (min-width: 600px) and (max-width: 899px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    /* 2 стовпці */
+  }
+}
+
+/* Планшетні екрани */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    /* 3 стовпці */
+  }
+}
+
+/* Великі екрани */
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+    /* 4 стовпці */
+  }
 }
 
 .empty {
