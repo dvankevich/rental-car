@@ -1,12 +1,12 @@
 .list {
-  margin-top: 56px;
-  margin-bottom: 80px;
+  margin-top: 3.5rem;
+  margin-bottom: 5rem;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  gap: 3rem 2rem;
 }
 
 .empty {
