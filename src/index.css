@@ -13,6 +13,9 @@
 
   --font-family: "Manrope", sans-serif;
   --second-family: "Inter", sans-serif;
+  /* базовий розмір шрифту */
+  font-size: 16px;
+
 }
 
 body {
