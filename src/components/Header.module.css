@@ -2,9 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--white);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 7.5rem;
+  background: var(--badges);
+  border-bottom: 1px solid var(--badges);
+  max-width: 90rem;
 }
 
 .logo {
@@ -16,7 +17,7 @@
 
 .nav {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .link {
